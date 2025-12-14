@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  # 1. Media Server (รับ Stream & จ่ายไฟล์)
+  media-server:
+    build: ./media-server
+    container_name: stream-engine
+    ports:
+      - "1935:1935" # Port สำหรับ OBS
+      - "8080:80" # Port สำหรับดูวิดีโอ (HTTP)
+    volumes:
+      - ./tmp/hls:/tmp/hls # Mount ออกมาเผื่ออยากดูไฟล์ข้างนอก
+
+  # 2. Web App (หน้า UI Next.js)
+  web:
+    build: ./stream-web
+    container_name: stream-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - media-server
+    environment:
+      # ส่งตัวแปร Environment ไปบอก Next.js ว่า Stream Server อยู่ไหน
+      - NEXT_PUBLIC_STREAM_URL=http://localhost:8080/hls
