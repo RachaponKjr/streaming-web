@@ -6,7 +6,7 @@ export default function StreamingDashboard() {
   return (
     <div className="flex h-screen bg-[#13141c] text-white font-sans overflow-hidden selection:bg-blue-500 selection:text-white">
       <Sidebar />
-      <MainContent src="" />
+      <MainContent src="http://localhost:8080/hls/live/stream.m3u8" />
       <ChatRoom />
     </div>
   );
